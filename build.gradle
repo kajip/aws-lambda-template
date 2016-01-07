@@ -11,62 +11,40 @@ buildscript {
 group = 'org.kajip'
 version = '0.0.3'
 
-apply plugin: 'java'
+subprojects {
+    group = rootProject.group
+    version = rootProject.version
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+    apply plugin: 'java'
 
-repositories {
-    mavenCentral()
-}
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
-dependencies {
-    compile "com.amazonaws:aws-lambda-java-core:1.1.0"
-    compile "com.amazonaws:aws-lambda-java-events:1.1.0"
-    compile "org.slf4j:slf4j-api:1.7.13"
-
-    runtime "org.slf4j:slf4j-log4j12:1.7.13"
-    runtime "com.amazonaws:aws-lambda-java-log4j:1.0.0"
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.+'
-}
-
-task buildZip(type: Zip) {
-    from compileJava
-    from processResources              
-    into('lib') {
-        from configurations.runtime
+    repositories {
+        mavenCentral()
     }
+
+    dependencies {
+        compile "com.amazonaws:aws-lambda-java-core:1.1.0"
+        compile "com.amazonaws:aws-lambda-java-events:1.1.0"
+        compile "org.slf4j:slf4j-api:1.7.13"
+
+        runtime "org.slf4j:slf4j-log4j12:1.7.13"
+        runtime "com.amazonaws:aws-lambda-java-log4j:1.0.0"
+
+        testCompile 'junit:junit:4.12'
+        testCompile 'org.mockito:mockito-core:1.+'
+    }
+
+    task buildZip(type: Zip) {
+        from compileJava
+        from processResources
+        into('lib') {
+            from configurations.runtime
+        }
+    }
+
+    build.dependsOn buildZip
 }
 
-build.dependsOn buildZip
-
-import com.amazonaws.services.lambda.model.Runtime
-import jp.classmethod.aws.gradle.lambda.AWSLambdaDeleteFunctionTask
-import jp.classmethod.aws.gradle.lambda.AWSLambdaInvokeTask
-import jp.classmethod.aws.gradle.lambda.AWSLambdaMigrateFunctionTask
-
-apply plugin: "jp.classmethod.aws.lambda"
-
-ext {
-    lambdaFunctionName = "javaHelloWorld"
-}
-
-aws {
-    profileName = "default"
-    region = "ap-northeast-1"
-}
-
-task migrateFunction(type: AWSLambdaMigrateFunctionTask, dependsOn: buildZip) {
-    runtime = Runtime.Java8
-    functionName = lambdaFunctionName
-    role = "arn:aws:iam::${aws.accountId}:role/lambda_basic_execution"
-    zipFile = buildZip.archivePath
-    handler = "org.kajip.lambda.hello.HelloWorld::handler"
-    memorySize = 128
-}
-
-task deleteFunction(type: AWSLambdaDeleteFunctionTask) {
-    functionName = lambdaFunctionName
-}
+task wrapper(type: Wrapper)
