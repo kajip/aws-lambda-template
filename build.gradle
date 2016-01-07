@@ -1,4 +1,10 @@
+group = 'org.kajip'
+version = '0.0.3'
+
 apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -7,6 +13,9 @@ repositories {
 dependencies {
     compile 'com.amazonaws:aws-lambda-java-core:1.1.0'
     compile 'com.amazonaws:aws-lambda-java-events:1.1.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.+'
 }
 
 task buildZip(type: Zip) {
@@ -14,8 +23,7 @@ task buildZip(type: Zip) {
     from processResources              
     into('lib') {
         from configurations.runtime
-    }           
+    }
 }
 
 build.dependsOn buildZip
-
