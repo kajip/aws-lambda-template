@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "jp.classmethod.aws:gradle-aws-plugin:0.21"
+    }
+}
+
 group = 'org.kajip'
 version = '0.0.3'
 
@@ -27,3 +37,32 @@ task buildZip(type: Zip) {
 }
 
 build.dependsOn buildZip
+
+import com.amazonaws.services.lambda.model.Runtime
+import jp.classmethod.aws.gradle.lambda.AWSLambdaDeleteFunctionTask
+import jp.classmethod.aws.gradle.lambda.AWSLambdaInvokeTask
+import jp.classmethod.aws.gradle.lambda.AWSLambdaMigrateFunctionTask
+
+apply plugin: "jp.classmethod.aws.lambda"
+
+ext {
+    lambdaFunctionName = "javaHelloWorld"
+}
+
+aws {
+    profileName = "default"
+    region = "ap-northeast-1"
+}
+
+task migrateFunction(type: AWSLambdaMigrateFunctionTask, dependsOn: buildZip) {
+    runtime = Runtime.Java8
+    functionName = lambdaFunctionName
+    role = "arn:aws:iam::${aws.accountId}:role/lambda_basic_execution"
+    zipFile = buildZip.archivePath
+    handler = "org.kajip.lambda.hello.HelloWorld::handler"
+    memorySize = 128
+}
+
+task deleteFunction(type: AWSLambdaDeleteFunctionTask) {
+    functionName = lambdaFunctionName
+}
