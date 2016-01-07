@@ -9,7 +9,7 @@ buildscript {
 }
 
 group = 'org.kajip'
-version = '0.0.3'
+version = '1.0.0'
 
 subprojects {
     group = rootProject.group
