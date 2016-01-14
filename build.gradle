@@ -47,4 +47,17 @@ subprojects {
     build.dependsOn buildZip
 }
 
+project(':redshift-restore') {
+    dependencies {
+        compile project(':redshift')
+    }
+}
+
+
+project(':redshift-shutdown') {
+    dependencies {
+        compile project(':redshift')
+    }
+}
+
 task wrapper(type: Wrapper)

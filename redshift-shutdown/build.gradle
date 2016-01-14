@@ -1,0 +1,36 @@
+ext {
+    lambdaFunctionName = "${rootProject.name}-${project.name}"
+    lambdaFunctionDescription = "Snapshot を残して、Redshift を Shutdownする関数"
+
+    lambdaHandlerClass = 'org.kajip.lambda.aws.RedshiftFunction'
+    lambdaHandlerMethod = 'handler'
+
+    lambdaRole = 'lambda_basic_execution'
+}
+
+apply plugin: "jp.classmethod.aws.lambda"
+
+import com.amazonaws.services.lambda.model.Runtime
+
+import jp.classmethod.aws.gradle.lambda.AWSLambdaDeleteFunctionTask
+import jp.classmethod.aws.gradle.lambda.AWSLambdaInvokeTask
+import jp.classmethod.aws.gradle.lambda.AWSLambdaMigrateFunctionTask
+
+aws {
+    profileName = "default"
+    region = "ap-northeast-1"
+}
+
+task migrateFunction(type: AWSLambdaMigrateFunctionTask, dependsOn: buildZip) {
+    runtime = Runtime.Java8
+    functionName = lambdaFunctionName
+    role = "arn:aws:iam::${aws.accountId}:role/${lambdaRole}"
+    zipFile = buildZip.archivePath
+    handler = "${lambdaHandlerClass}::${lambdaHandlerMethod}"
+    memorySize = 512
+    timeout = 30
+}
+
+task deleteFunction(type: AWSLambdaDeleteFunctionTask) {
+    functionName = lambdaFunctionName
+}
