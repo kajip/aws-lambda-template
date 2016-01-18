@@ -2,10 +2,11 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": [
-        "ec2:Describe*"
-      ],
       "Effect": "Allow",
+      "Action": [
+        "aws-portal:ViewUsage",
+        "aws-portal:ViewBilling"
+      ],
       "Resource": "*"
     }
   ]
