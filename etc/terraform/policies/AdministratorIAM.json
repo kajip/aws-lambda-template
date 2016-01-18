@@ -2,10 +2,63 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": [
-        "ec2:Describe*"
-      ],
       "Effect": "Allow",
+      "Action": [
+        "iam:GetAccountSummary",
+        "iam:ListAccountAliases",
+
+        "iam:GenerateServiceLastAccessedDetails",
+        "iam:GetServiceLastAccessedDetails",
+
+        "iam:ListPolicies",
+        "iam:GetPolicy",
+        "iam:ListPolicyVersions",
+        "iam:ListEntitiesForPolicy",
+
+        "iam:ListRoles",
+        "iam:GetRole",
+        "iam:ListRolePolicies",
+        "iam:GetRolePolicy",
+        "iam:ListAttachedRolePolicies",
+
+        "iam:ListGroups",
+        "iam:GetGroup",
+        "iam:ListAttachedGroupPolicies",
+        "iam:ListGroupPolicies",
+        "iam:ListGroupsForUser",
+
+        "iam:ListUsers",
+        "iam:GetUser",
+        "iam:CreateUser",
+        "iam:UpdateUser",
+        "iam:DeleteUser",
+        "iam:ListAttachedUserPolicies",
+        "iam:ListUserPolicies",
+
+        "iam:AddUserToGroup",
+        "iam:RemoveUserFromGroup",
+
+        "iam:ListAccessKeys",
+        "iam:GetAccessKeyLastUsed",
+        "iam:CreateAccessKey",
+        "iam:UpdateAccessKey",
+        "iam:DeleteAccessKey",
+
+        "iam:GetLoginProfile",
+        "iam:CreateLoginProfile",
+        "iam:UpdateLoginProfile",
+        "iam:DeleteLoginProfile",
+
+        "iam:ListSigningCertificates",
+
+        "iam:ListMFADevices",
+        "iam:ListVirtualMFADevices",
+        "iam:CreateVirtualMFADevice",
+        "iam:DeleteVirtualMFADevice",
+        "iam:DeactivateMFADevice",
+        "iam:EnableMFADevice",
+        "iam:ResyncMFADevice"
+      ],
       "Resource": "*"
     }
   ]
