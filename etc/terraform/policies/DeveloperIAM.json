@@ -2,11 +2,58 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": [
-        "ec2:Describe*"
-      ],
       "Effect": "Allow",
+      "Action": [
+        "iam:GetAccountSummary",
+        "iam:ListAccountAliases",
+
+        "iam:GenerateServiceLastAccessedDetails",
+        "iam:GetServiceLastAccessedDetails",
+
+        "iam:ListGroups",
+        "iam:GetGroup",
+        "iam:ListAttachedGroupPolicies",
+        "iam:ListGroupPolicies",
+        "iam:ListGroupsForUser",
+
+        "iam:ListUsers",
+        "iam:GetUser",
+        "iam:ListAttachedUserPolicies",
+        "iam:ListUserPolicies",
+
+        "iam:ListAccessKeys",
+
+        "iam:GetLoginProfile",
+
+        "iam:ListSigningCertificates",
+
+        "iam:ListMFADevices",
+        "iam:ListVirtualMFADevices"
+      ],
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateAccessKey",
+        "iam:UpdateAccessKey",
+        "iam:DeleteAccessKey",
+
+        "iam:CreateLoginProfile",
+        "iam:UpdateLoginProfile",
+        "iam:DeleteLoginProfile",
+
+        "iam:CreateVirtualMFADevice",
+        "iam:DeleteVirtualMFADevice",
+        "iam:DeactivateMFADevice",
+        "iam:EnableMFADevice",
+        "iam:ResyncMFADevice"
+
+      ],
+      "Resource": [
+        "arn:aws:iam::529165812037:user/${aws:username}",
+        "arn:aws:iam::529165812037:mfa/${aws:username}"
+      ]
     }
   ]
 }
